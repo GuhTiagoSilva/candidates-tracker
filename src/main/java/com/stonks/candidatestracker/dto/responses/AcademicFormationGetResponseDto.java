@@ -1,6 +1,5 @@
 package com.stonks.candidatestracker.dto.responses;
 
-import com.stonks.candidatestracker.enums.AcademicFormationType;
 import com.stonks.candidatestracker.models.AcademicFormationModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

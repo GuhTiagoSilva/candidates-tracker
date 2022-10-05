@@ -46,4 +46,6 @@ public class UserModel implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private Set<SkillModel> skills = new HashSet<>();
+    @OneToMany(mappedBy = "creator")
+    private List<VacancyModel> vacancies = new ArrayList<>();
 }

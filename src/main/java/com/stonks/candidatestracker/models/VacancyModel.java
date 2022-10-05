@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,12 +24,13 @@ public class VacancyModel implements Serializable {
     private Long id;
     private String name;
     private String description;
-    @ElementCollection(targetClass = Country.class)
-    @JoinTable(name = "tb_countries", joinColumns = @JoinColumn(name = "vacancy_id"))
     @Enumerated(EnumType.STRING)
-    private List<Country> countries = new ArrayList<>();
+    private Country country;
     @Enumerated(EnumType.STRING)
     private ContractType contractType;
     private boolean isConcluded = Boolean.FALSE;
+    @ManyToOne
+    @JoinColumn(name = "user_creator_id")
+    private VacancyModel creator;
 
 }
