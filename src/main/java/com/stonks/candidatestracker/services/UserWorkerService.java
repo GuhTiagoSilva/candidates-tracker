@@ -31,5 +31,10 @@ public class UserWorkerService {
         UserModel user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return new UserWorkerGetResponseDto(user);
     }
+    @Transactional(readOnly = true)
+    public List<UserWorkerGetResponseDto> findAllUsersOpenToWork() {
+        List<UserModel> users = userRepository.findAllByIsOpenToWorkTrue();
+        return users.stream().map(user -> new UserWorkerGetResponseDto(user)).collect(Collectors.toList());
+    }
 
 }

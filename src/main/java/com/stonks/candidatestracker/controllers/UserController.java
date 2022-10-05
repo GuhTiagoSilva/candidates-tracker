@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService userService;
@@ -38,6 +39,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserWorkerGetResponseDto findById(@PathVariable Long id) {
         return userWorkerService.findById(id);
+    }
+
+    @GetMapping(value = "/available")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserWorkerGetResponseDto> findAllOpenToWork() {
+        return userWorkerService.findAllUsersOpenToWork();
     }
 
 }
