@@ -34,4 +34,10 @@ public class UserController {
         return userWorkerService.findAll();
     }
 
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserWorkerGetResponseDto findById(@PathVariable Long id) {
+        return userWorkerService.findById(id);
+    }
+
 }
