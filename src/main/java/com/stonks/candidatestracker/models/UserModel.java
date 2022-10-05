@@ -27,10 +27,13 @@ public class UserModel implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(unique = true, nullable = false)
     private String cpf;
-    private boolean isOpenToWork;
+    private Boolean isOpenToWork;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleModel roleModel;
@@ -48,4 +51,7 @@ public class UserModel implements Serializable {
     private Set<SkillModel> skills = new HashSet<>();
     @OneToMany(mappedBy = "creator")
     private List<VacancyModel> vacancies = new ArrayList<>();
+    public UserModel(Long id) {
+        this.id = id;
+    }
 }

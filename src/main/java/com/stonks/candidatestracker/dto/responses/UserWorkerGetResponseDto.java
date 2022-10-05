@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserWorkerGetResponseDto extends UserDto {
-    private boolean isOpenToWork;
+    private Boolean isOpenToWork;
     private RoleDto role;
     private List<JobExperienceGetResponseDto> jobExperiences = new ArrayList<>();
     private List<SkillGetResponseDto> skills = new ArrayList<>();
@@ -27,7 +27,8 @@ public class UserWorkerGetResponseDto extends UserDto {
         super.setFirstName(user.getFirstName());
         super.setLastName(user.getLastName());
         super.setCpf(user.getCpf());
-        isOpenToWork = user.isOpenToWork();
+        super.setEmail(user.getEmail());
+        isOpenToWork = user.getIsOpenToWork();
         role = new RoleDto(user.getRoleModel());
         user.getExperiences().forEach(experience -> this.jobExperiences.add(new JobExperienceGetResponseDto(experience)));
         user.getSkills().forEach(skill -> this.skills.add(new SkillGetResponseDto(skill)));

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -20,10 +21,15 @@ public class JobExperienceGetResponseDto implements Serializable {
     private String jobTitle;
     private String description;
 
+    private LocalDate startDate;
+    private LocalDate endDate;
+
     public JobExperienceGetResponseDto(JobExperienceModel jobExperience) {
         id = jobExperience.getId();
         companyName = jobExperience.getCompanyName();
         jobTitle = jobExperience.getJobTitle();
         description = jobExperience.getDescription();
+        startDate = jobExperience.getStartDate();
+        endDate = jobExperience.getEndDate();
     }
 }

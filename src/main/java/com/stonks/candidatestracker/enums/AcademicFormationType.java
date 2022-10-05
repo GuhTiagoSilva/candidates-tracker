@@ -2,6 +2,8 @@ package com.stonks.candidatestracker.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 public enum AcademicFormationType {
 
     BACHELOR_DEGREE("ENSINO SUPERIOR"),
@@ -14,6 +16,15 @@ public enum AcademicFormationType {
 
     AcademicFormationType(String value) {
         this.value = value;
+    }
+
+
+    public static AcademicFormationType fromValue(String value) {
+        return Arrays
+                .stream(AcademicFormationType.values())
+                .filter(academicFormationType -> academicFormationType.getValue()
+                        .equals(value))
+                .findFirst().get();
     }
 
 }

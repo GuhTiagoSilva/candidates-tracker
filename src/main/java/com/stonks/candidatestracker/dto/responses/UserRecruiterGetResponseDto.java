@@ -12,7 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRecruiterGetResponseDto extends UserDto {
-
     private List<VacancyGetResponseDto> vacanciesOpenedByThisUser = new ArrayList<>();
-
 }

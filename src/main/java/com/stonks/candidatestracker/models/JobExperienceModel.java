@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -27,4 +28,6 @@ public class JobExperienceModel implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserModel worker;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }
