@@ -1,17 +1,20 @@
 package com.stonks.candidatestracker.controllers;
 
+import com.stonks.candidatestracker.dto.UserDto;
 import com.stonks.candidatestracker.dto.UserInsertDto;
+import com.stonks.candidatestracker.dto.UserUpdateDto;
 import com.stonks.candidatestracker.dto.responses.UserWorkerGetResponseDto;
 import com.stonks.candidatestracker.services.UserService;
 import com.stonks.candidatestracker.services.UserWorkerService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService userService;
@@ -23,28 +26,43 @@ public class UserController {
         this.userWorkerService = userWorkerService;
     }
 
-    @PostMapping
+    @PostMapping("/signup")
+    @ApiOperation(value = "Criar um usuário")
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody UserInsertDto userInsertDto) {
         userService.createUser(userInsertDto);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public List<UserWorkerGetResponseDto> findAll() {
-        return userWorkerService.findAll();
-    }
-
     @GetMapping(value = "/{id}")
+    @ApiOperation(value = "Encontrar um usuário por ID")
+    @PreAuthorize("hasAnyRole('WORKER', 'RECRUITER')")
     @ResponseStatus(HttpStatus.OK)
     public UserWorkerGetResponseDto findById(@PathVariable Long id) {
         return userWorkerService.findById(id);
     }
 
-    @GetMapping(value = "/available")
+    @GetMapping("authenticated")
+    @ApiOperation(value = "Achar informações do usuário autenticado")
+    @PreAuthorize("hasAnyRole('WORKER', 'RECRUITER')")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto findAuthUserInformation() {
+        return userService.findAuthUserInformation();
+    }
+
+    @GetMapping
+    @ApiOperation(value = "Encontrar todos os usuários que estão open to work")
+    @PreAuthorize("hasAnyRole( 'RECRUITER')")
     @ResponseStatus(HttpStatus.OK)
     public List<UserWorkerGetResponseDto> findAllOpenToWork() {
         return userWorkerService.findAllUsersOpenToWork();
+    }
+
+    @PutMapping
+    @ApiOperation(value = "Atualizar um usuário")
+    @PreAuthorize("hasAnyRole('WORKER', 'RECRUITER')")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateUser(@RequestBody UserUpdateDto userUpdateDto) {
+        userService.updateUser(userUpdateDto);
     }
 
 }

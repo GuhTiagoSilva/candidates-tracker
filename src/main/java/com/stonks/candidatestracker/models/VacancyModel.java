@@ -23,6 +23,7 @@ public class VacancyModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
     @Enumerated(EnumType.STRING)
     private Country country;
@@ -31,6 +32,6 @@ public class VacancyModel implements Serializable {
     private boolean isConcluded = Boolean.FALSE;
     @ManyToOne
     @JoinColumn(name = "user_creator_id")
-    private VacancyModel creator;
+    private UserModel creator;
 
 }

@@ -9,4 +9,6 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
     List<UserModel> findAllByIsOpenToWorkTrue();
 
+    UserModel findByEmail(String email);
+
 }

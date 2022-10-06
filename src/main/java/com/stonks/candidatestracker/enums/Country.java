@@ -2,6 +2,8 @@ package com.stonks.candidatestracker.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 public enum Country {
     USA("United States of America"),
     AFGHANISTAN("Afghanistan"),
@@ -211,5 +213,13 @@ public enum Country {
 
     Country(String country) {
         this.country = country;
+    }
+
+    public static Country fromValue(String countryName) {
+        return Arrays
+                .stream(Country.values())
+                .filter(country -> country.getCountry()
+                        .equals(countryName))
+                .findFirst().get();
     }
 }

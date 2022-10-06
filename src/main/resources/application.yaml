@@ -3,6 +3,17 @@ spring:
     active: dev
   jpa:
     open-in-view: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 server:
   servlet:
     context-path: /api/v1
+jwt:
+  secret: ${JWT_SECRET:stonks123456}
+  duration: 86400
+security:
+  oauth2:
+    client:
+      client-id: ${CLIENT_ID:stonks}
+      client-secret: ${CLIENT_SECRET:stonks123456}

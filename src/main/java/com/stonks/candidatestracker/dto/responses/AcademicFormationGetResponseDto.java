@@ -1,5 +1,6 @@
 package com.stonks.candidatestracker.dto.responses;
 
+import com.stonks.candidatestracker.enums.AcademicFormationType;
 import com.stonks.candidatestracker.models.AcademicFormationModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class AcademicFormationGetResponseDto implements Serializable {
     private long id;
     private String institutionName;
     // get value from enum AcademicFormationType
-    private String academicFormationType;
+    private AcademicFormationType academicFormationType;
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -27,7 +28,7 @@ public class AcademicFormationGetResponseDto implements Serializable {
     public AcademicFormationGetResponseDto(AcademicFormationModel academicFormationModel) {
         id = academicFormationModel.getId();
         institutionName = academicFormationModel.getInstitutionName();
-        academicFormationType = academicFormationModel.getAcademicFormationType().getValue();
+        academicFormationType = academicFormationModel.getAcademicFormationType();
         description = academicFormationModel.getDescription();
         startDate = academicFormationModel.getStartDate();
         endDate = academicFormationModel.getEndDate();

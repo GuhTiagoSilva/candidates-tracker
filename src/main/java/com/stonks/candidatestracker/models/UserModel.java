@@ -2,24 +2,22 @@ package com.stonks.candidatestracker.models;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Table(name = "tb_user")
-public class UserModel implements Serializable {
+public class UserModel implements Serializable, UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -53,5 +51,37 @@ public class UserModel implements Serializable {
     private List<VacancyModel> vacancies = new ArrayList<>();
     public UserModel(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> simpleGrantedAuthorityList = new ArrayList<>();
+        simpleGrantedAuthorityList.add(new SimpleGrantedAuthority(this.roleModel.getAuthority()));
+        return simpleGrantedAuthorityList;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
