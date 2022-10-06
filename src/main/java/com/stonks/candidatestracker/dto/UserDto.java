@@ -19,8 +19,7 @@ public class UserDto implements Serializable {
 
     private Long id;
     private String firstName;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+
     private String lastName;
     private String email;
     private String cpf;
