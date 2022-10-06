@@ -36,4 +36,12 @@ public class VacancyController {
         vacancyService.createVacancy(vacancyInsertDto);
     }
 
+    @PostMapping("/{vacancyId}/apply")
+    @ApiOperation(value = "Aplicar para uma vaga")
+    @PreAuthorize("hasAnyRole('WORKER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void applyUserToVacancy(@PathVariable Long vacancyId) {
+        vacancyService.applyToVacancy(vacancyId);
+    }
+
 }

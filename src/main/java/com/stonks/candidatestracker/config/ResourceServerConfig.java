@@ -28,6 +28,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private static final String[] PUBLIC = {
             "/oauth/token",
             "/users/signup",
+            "/users/{id}",
             "/h2-console/**",
             "/countries",
             "/contract-types",

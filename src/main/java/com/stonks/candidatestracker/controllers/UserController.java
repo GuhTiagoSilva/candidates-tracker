@@ -35,7 +35,6 @@ public class UserController {
 
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "Encontrar um usuário por ID")
-    @PreAuthorize("hasAnyRole('WORKER', 'RECRUITER')")
     @ResponseStatus(HttpStatus.OK)
     public UserWorkerGetResponseDto findById(@PathVariable Long id) {
         return userWorkerService.findById(id);

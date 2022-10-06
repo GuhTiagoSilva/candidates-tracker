@@ -33,5 +33,4 @@ public class VacancyModel implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_creator_id")
     private UserModel creator;
-
 }
