@@ -4,7 +4,6 @@ import com.stonks.candidatestracker.dto.responses.AcademicFormationGetResponseDt
 import com.stonks.candidatestracker.dto.responses.JobExperienceGetResponseDto;
 import com.stonks.candidatestracker.dto.responses.SkillGetResponseDto;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

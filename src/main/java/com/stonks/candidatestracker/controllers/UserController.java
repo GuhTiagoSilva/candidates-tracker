@@ -56,12 +56,12 @@ public class UserController {
         return userWorkerService.findAllUsersOpenToWork();
     }
 
-    @PutMapping
+    @PutMapping("/{userId}")
     @ApiOperation(value = "Atualizar um usuário")
     @PreAuthorize("hasAnyRole('WORKER', 'RECRUITER')")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUser(@RequestBody UserUpdateDto userUpdateDto) {
-        userService.updateUser(userUpdateDto);
+    public void updateUser(@PathVariable Long userId, @RequestBody UserUpdateDto userUpdateDto) {
+        userService.updateUser(userId, userUpdateDto);
     }
 
 }

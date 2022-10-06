@@ -5,6 +5,8 @@ import com.stonks.candidatestracker.dto.UserInsertDto;
 import com.stonks.candidatestracker.dto.UserUpdateDto;
 import com.stonks.candidatestracker.models.*;
 import com.stonks.candidatestracker.repositories.*;
+import com.stonks.candidatestracker.services.exceptions.BusinessException;
+import com.stonks.candidatestracker.services.exceptions.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -63,9 +65,13 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUser(UserUpdateDto userDto) {
+    public void updateUser(Long userId, UserUpdateDto userDto) {
+        UserModel authUser = authService.authenticated();
+        UserModel user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found: " + userId));
 
-        UserModel user = authService.authenticated();
+        if (!user.getId().equals(authUser.getId())) {
+            throw new BusinessException("No permission!");
+        }
 
         if (user.getRoleModel().getAuthority().equals("ROLE_WORKER")) {
             List<JobExperienceModel> jobExperiences = new ArrayList<>();
@@ -118,8 +124,14 @@ public class UserService implements UserDetailsService {
     }
 
     private void copyDtoToEntity(UserDto userDto, UserModel user) {
-        user.setCpf(userDto.getCpf());
-        user.setEmail(userDto.getEmail());
+        if (!userDto.getCpf().equals(user.getCpf())) {
+            user.setCpf(userDto.getCpf());
+        }
+
+        if (!userDto.getEmail().equals(user.getEmail())) {
+            user.setEmail(userDto.getEmail());
+        }
+
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setIsOpenToWork(userDto.isOpenToWork());
