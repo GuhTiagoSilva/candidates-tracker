@@ -28,3 +28,9 @@ security:
     client:
       client-id: ${CLIENT_ID:stonks}
       client-secret: ${CLIENT_SECRET:stonks123456}
+aws:
+  access_key_id: ${AWS_KEY:empty}
+  secret_access_key: ${AWS_SECRET:empty}
+s3:
+  bucket: ${STONKS_BUCKET_NAME:empty}
+  region: ${STONKS_BUCKET_REGION:sa-east-1}

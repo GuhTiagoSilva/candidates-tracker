@@ -14,7 +14,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URL;
 import java.util.*;
 
 @Service
@@ -26,9 +29,12 @@ public class UserService implements UserDetailsService {
     private final SkillRepository skillRepository;
     private final AcademicFormationRepository academicFormationRepository;
     private final JobExperienceRepository jobExperienceRepository;
-
     private final AuthService authService;
     private final BCryptPasswordEncoder passwordEncoder;
+
+    private final S3Service s3Service;
+
+    private String awsBucketEndpoint = "https://stonks-challenge-bucket.s3.sa-east-1.amazonaws.com";
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
@@ -36,6 +42,7 @@ public class UserService implements UserDetailsService {
                        AcademicFormationRepository academicFormationRepository,
                        SkillRepository skillRepository,
                        BCryptPasswordEncoder passwordEncoder,
+                       S3Service s3Service,
                        AuthService authService
     ) {
         this.userRepository = userRepository;
@@ -45,6 +52,7 @@ public class UserService implements UserDetailsService {
         this.academicFormationRepository = academicFormationRepository;
         this.passwordEncoder = passwordEncoder;
         this.authService = authService;
+        this.s3Service = s3Service;
     }
 
 
@@ -65,7 +73,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUser(Long userId, UserUpdateDto userDto) {
+    public void updateUser(Long userId, UserUpdateDto userDto, MultipartFile multipartFile) {
         UserModel authUser = authService.authenticated();
         UserModel user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not Found: " + userId));
 
@@ -120,6 +128,10 @@ public class UserService implements UserDetailsService {
         }
 
         this.copyDtoToEntity(userDto, user);
+        if (!multipartFile.isEmpty() && Objects.nonNull(multipartFile)) {
+            String url = this.awsBucketEndpoint + s3Service.uploadFile(multipartFile).getPath();
+            user.setPhoto(url);
+        }
         userRepository.save(user);
     }
 

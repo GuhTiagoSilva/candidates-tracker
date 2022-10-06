@@ -8,9 +8,13 @@ import com.stonks.candidatestracker.services.UserService;
 import com.stonks.candidatestracker.services.UserWorkerService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -56,12 +60,15 @@ public class UserController {
         return userWorkerService.findAllUsersOpenToWork();
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping(value = "/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiOperation(value = "Atualizar um usuário")
     @PreAuthorize("hasAnyRole('WORKER', 'RECRUITER')")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUser(@PathVariable Long userId, @RequestBody UserUpdateDto userUpdateDto) {
-        userService.updateUser(userId, userUpdateDto);
+    public void updateUser(@PathVariable Long userId,
+                           @RequestPart(value = "user") UserUpdateDto userUpdateDto,
+                           @RequestPart(name = "image", required = false) MultipartFile multipartFile
+    ) throws IOException {
+        userService.updateUser(userId, userUpdateDto, multipartFile);
     }
 
 }

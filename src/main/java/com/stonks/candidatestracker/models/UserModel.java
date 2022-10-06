@@ -32,6 +32,8 @@ public class UserModel implements Serializable, UserDetails {
     @Column(unique = true, nullable = false)
     private String cpf;
     private Boolean isOpenToWork;
+    @Column(columnDefinition = "TEXT")
+    private String photo;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleModel roleModel;

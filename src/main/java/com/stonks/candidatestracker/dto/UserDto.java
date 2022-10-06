@@ -1,7 +1,5 @@
 package com.stonks.candidatestracker.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.stonks.candidatestracker.models.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +25,8 @@ public class UserDto implements Serializable {
     private boolean isOpenToWork;
     private RoleDto role;
 
+    private String photo;
+
     public UserDto(UserModel user) {
         id = user.getId();
         firstName = user.getFirstName();
@@ -34,6 +34,7 @@ public class UserDto implements Serializable {
         email = user.getEmail();
         cpf = user.getCpf();
         role = new RoleDto(user.getRoleModel());
+        photo = user.getPhoto();
     }
 
 }

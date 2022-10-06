@@ -28,6 +28,7 @@ public class UserWorkerGetResponseDto extends UserDto {
         super.setLastName(user.getLastName());
         super.setCpf(user.getCpf());
         super.setEmail(user.getEmail());
+        super.setPhoto(user.getPhoto());
         isOpenToWork = user.getIsOpenToWork();
         role = new RoleDto(user.getRoleModel());
         user.getExperiences().forEach(experience -> this.jobExperiences.add(new JobExperienceGetResponseDto(experience)));
