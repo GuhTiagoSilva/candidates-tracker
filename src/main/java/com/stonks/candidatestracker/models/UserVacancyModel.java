@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -20,4 +21,6 @@ public class UserVacancyModel implements Serializable {
 
     @EmbeddedId
     private UserVacancyPK userVacancyPK = new UserVacancyPK();
+    @Column(columnDefinition = "TEXT")
+    private String resume;
 }

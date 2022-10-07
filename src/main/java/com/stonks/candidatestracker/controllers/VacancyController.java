@@ -1,12 +1,14 @@
 package com.stonks.candidatestracker.controllers;
 
 import com.stonks.candidatestracker.dto.VacancyInsertDto;
+import com.stonks.candidatestracker.dto.VacancyUpdateDto;
 import com.stonks.candidatestracker.dto.responses.VacancyGetResponseDto;
 import com.stonks.candidatestracker.services.VacancyService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -40,8 +42,22 @@ public class VacancyController {
     @ApiOperation(value = "Aplicar para uma vaga")
     @PreAuthorize("hasAnyRole('WORKER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public void applyUserToVacancy(@PathVariable Long vacancyId) {
-        vacancyService.applyToVacancy(vacancyId);
+    public void applyUserToVacancy(@PathVariable Long vacancyId, @RequestPart("resume")MultipartFile multipartFile) {
+        vacancyService.applyToVacancy(vacancyId, multipartFile);
+    }
+
+    @GetMapping("/creator")
+    @ApiOperation(value = "Obter vagas abertas pelo recrutador autenticado")
+    @PreAuthorize(value = "hasAnyRole('RECRUITER')")
+    public List<VacancyGetResponseDto> findVacancyOpenByRecruiter() {
+        return vacancyService.findAllByCreator();
+    }
+
+    @GetMapping("/update")
+    @ApiOperation(value = "Atualizar vaga")
+    @PreAuthorize(value = "hasAnyRole('RECRUITER')")
+    public void updateVacancy(Long vacancyId, VacancyUpdateDto vacancyUpdateDto) {
+        vacancyService.updateVacancy(vacancyId, vacancyUpdateDto);
     }
 
 }

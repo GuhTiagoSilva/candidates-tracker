@@ -2,6 +2,7 @@ package com.stonks.candidatestracker.services;
 
 import com.stonks.candidatestracker.dto.EmailDetailsDto;
 import com.stonks.candidatestracker.dto.VacancyInsertDto;
+import com.stonks.candidatestracker.dto.VacancyUpdateDto;
 import com.stonks.candidatestracker.dto.responses.VacancyGetResponseDto;
 import com.stonks.candidatestracker.models.UserModel;
 import com.stonks.candidatestracker.models.UserVacancyModel;
@@ -15,8 +16,10 @@ import com.stonks.candidatestracker.utils.MailMessageUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,16 +32,26 @@ public class VacancyService {
 
     private final EmailService emailService;
 
-    public VacancyService(VacancyRepository vacancyRepository, AuthService authService, UserVacancyRepository userVacancyRepository, EmailService emailService) {
+    private final S3ServicePdfUploadImpl s3ServicePdfUpload;
+
+    private String awsBucketEndpoint = "https://stonks-challenge-bucket.s3.sa-east-1.amazonaws.com";
+
+    public VacancyService(VacancyRepository vacancyRepository,
+                          AuthService authService,
+                          UserVacancyRepository userVacancyRepository,
+                          EmailService emailService,
+                          S3ServicePdfUploadImpl s3ServicePdfUpload
+    ) {
         this.vacancyRepository = vacancyRepository;
         this.authService = authService;
         this.userVacancyRepository = userVacancyRepository;
         this.emailService = emailService;
+        this.s3ServicePdfUpload = s3ServicePdfUpload;
     }
 
     @Transactional(readOnly = true)
     public List<VacancyGetResponseDto> findAllOpenVacancies() {
-        List<VacancyModel> vacancies = vacancyRepository.findAll().stream().filter(x -> x.isConcluded() == false).collect(Collectors.toList());
+        List<VacancyModel> vacancies = vacancyRepository.findAllByConcludedIsFalse();
         return vacancies.stream().map(vacancy -> new VacancyGetResponseDto(vacancy)).collect(Collectors.toList());
     }
 
@@ -56,7 +69,24 @@ public class VacancyService {
     }
 
     @Transactional
-    public void applyToVacancy(Long vacancyId) {
+    public void updateVacancy(Long vacancyId, VacancyUpdateDto vacancyUpdateDto) {
+
+        UserModel authUser = authService.authenticated();
+        VacancyModel vacancyModel = vacancyRepository.findById(vacancyId).orElseThrow(() -> new ResourceNotFoundException("Vacancy Not Found"));
+
+        if (!vacancyModel.getCreator().getId().equals(authUser.getId()))
+            throw new BusinessException("You are trying to update a vacancy that belongs to another creator.");
+
+        vacancyModel.setConcluded(vacancyUpdateDto.isConcluded());
+        vacancyModel.setDescription(vacancyUpdateDto.getDescription());
+        vacancyModel.setCountry(vacancyUpdateDto.getCountry());
+        vacancyModel.setContractType(vacancyUpdateDto.getContractType());
+        vacancyModel.setName(vacancyUpdateDto.getName());
+        vacancyRepository.save(vacancyModel);
+    }
+
+    @Transactional
+    public void applyToVacancy(Long vacancyId, MultipartFile multipartFile) {
 
         UserModel authUser = authService.authenticated();
         VacancyModel vacancy = vacancyRepository.findById(vacancyId).orElseThrow(() -> new ResourceNotFoundException("Vacancy not found: " + vacancyId));
@@ -78,6 +108,7 @@ public class VacancyService {
         htmlBodyEmail = htmlBodyEmail.replaceAll("_vacancyName_", vacancy.getName());
         htmlBodyEmail = htmlBodyEmail.replaceAll("userId", String.valueOf(authUser.getId()));
 
+
         EmailDetailsDto emailDetailsDto = EmailDetailsDto.builder()
                 .msgBody(htmlBodyEmail)
                 .subject(subject)
@@ -88,9 +119,24 @@ public class VacancyService {
         UserVacancyModel userVacancyModel = new UserVacancyModel();
         userVacancyModel.setUserVacancyPK(userVacancyPK);
 
+        if (Objects.nonNull(multipartFile) && !multipartFile.isEmpty()) {
+            String url = this.awsBucketEndpoint + s3ServicePdfUpload.uploadFile(multipartFile).getPath();
+            userVacancyModel.setResume(url);
+        }
         userVacancyRepository.save(userVacancyModel);
-        emailService.sendMail(emailDetailsDto);
+        try {
+            emailService.sendMail(emailDetailsDto);
+        } catch (Exception e) {
+            log.error("ERROR: {}", e.getMessage());
+        }
 
+    }
+
+    @Transactional(readOnly = true)
+    public List<VacancyGetResponseDto> findAllByCreator() {
+        UserModel creator = authService.authenticated();
+        return vacancyRepository.findAllByCreator(creator).stream().map(vacancy -> new VacancyGetResponseDto(vacancy))
+                .collect(Collectors.toList());
     }
 
 }

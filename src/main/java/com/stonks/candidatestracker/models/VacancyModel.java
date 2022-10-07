@@ -29,7 +29,7 @@ public class VacancyModel implements Serializable {
     private Country country;
     @Enumerated(EnumType.STRING)
     private ContractType contractType;
-    private boolean isConcluded = Boolean.FALSE;
+    private boolean concluded = Boolean.FALSE;
     @ManyToOne
     @JoinColumn(name = "user_creator_id")
     private UserModel creator;
