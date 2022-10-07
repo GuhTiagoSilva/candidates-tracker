@@ -1,5 +1,7 @@
 package com.stonks.candidatestracker.dto.responses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.stonks.candidatestracker.models.CertificationModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +19,13 @@ public class CertificateDto implements Serializable {
 
     private long id;
     private String skillName;
+    @JsonIgnore
     private String userName;
     private LocalDate approvedDate;
+
+    public CertificateDto(CertificationModel certificationModel) {
+        id = certificationModel.getId();
+        skillName = certificationModel.getSkill().getSkillName();
+        approvedDate = certificationModel.getEmitted();
+    }
 }

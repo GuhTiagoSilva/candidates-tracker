@@ -2,15 +2,13 @@ package com.stonks.candidatestracker.models;
 
 import com.stonks.candidatestracker.enums.ContractType;
 import com.stonks.candidatestracker.enums.Country;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

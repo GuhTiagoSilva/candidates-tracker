@@ -1,9 +1,7 @@
 package com.stonks.candidatestracker.models;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +10,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -49,6 +48,8 @@ public class UserModel implements Serializable, UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private Set<SkillModel> skills = new HashSet<>();
+    @ManyToMany(mappedBy = "users")
+    private Set<CertificationModel> certificates = new HashSet<>();
     @OneToMany(mappedBy = "creator")
     private List<VacancyModel> vacancies = new ArrayList<>();
     public UserModel(Long id) {
