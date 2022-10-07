@@ -37,11 +37,11 @@ public class TestController {
         return testService.findBySkill(skillId);
     }
 
-    @ApiOperation("Resultado do teste")
+    @ApiOperation("Gera o certificado do teste")
     @GetMapping("/{testId}/revision")
     @PreAuthorize("hasAnyRole('WORKER')")
     @ResponseStatus(HttpStatus.OK)
-    public CertificateDto correctTest(@PathVariable Long testId, @RequestBody TestInsertDto testInsertDto) {
+    public CertificateDto generateCertificate(@PathVariable Long testId, @RequestBody TestInsertDto testInsertDto) {
         return testService.correctTest(testId, testInsertDto);
     }
 
