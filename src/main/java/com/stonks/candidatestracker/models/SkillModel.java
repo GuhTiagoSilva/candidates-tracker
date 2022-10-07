@@ -19,7 +19,6 @@ public class SkillModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String skillName;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "test_id")
+    @OneToOne(mappedBy = "skill")
     private TestModel test;
 }

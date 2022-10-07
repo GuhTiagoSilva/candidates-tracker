@@ -109,23 +109,28 @@ public class VacancyService {
         htmlBodyEmail = htmlBodyEmail.replaceAll("userId", String.valueOf(authUser.getId()));
 
 
-        EmailDetailsDto emailDetailsDto = EmailDetailsDto.builder()
-                .msgBody(htmlBodyEmail)
-                .subject(subject)
-                .attachment(null)
-                .recipient(vacancyCreator.getEmail())
-                .build();
-
         UserVacancyModel userVacancyModel = new UserVacancyModel();
         userVacancyModel.setUserVacancyPK(userVacancyPK);
 
+        String urlAttachment = "";
+
         if (Objects.nonNull(multipartFile) && !multipartFile.isEmpty()) {
             String url = this.awsBucketEndpoint + s3ServicePdfUpload.uploadFile(multipartFile).getPath();
+            urlAttachment = url;
             userVacancyModel.setResume(url);
         }
+
         userVacancyRepository.save(userVacancyModel);
         try {
-            emailService.sendMail(emailDetailsDto);
+
+            EmailDetailsDto emailDetailsDto = EmailDetailsDto.builder()
+                    .msgBody(htmlBodyEmail)
+                    .subject(subject)
+                    .attachment(Objects.nonNull(urlAttachment) && urlAttachment != "" ? urlAttachment : null)
+                    .recipient(vacancyCreator.getEmail())
+                    .build();
+            emailService.sendMail(emailDetailsDto, multipartFile.getOriginalFilename());
+
         } catch (Exception e) {
             log.error("ERROR: {}", e.getMessage());
         }

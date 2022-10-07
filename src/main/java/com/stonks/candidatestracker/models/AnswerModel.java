@@ -19,7 +19,9 @@ public class AnswerModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(columnDefinition = "TEXT")
     private String answerDescription;
-    @OneToOne(mappedBy = "answer")
+    @ManyToOne
+    @JoinColumn(name = "question_id")
     private QuestionModel question;
 }

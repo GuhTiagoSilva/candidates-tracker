@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,10 +23,9 @@ public class QuestionModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String question;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_id")
     private TestModel test;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "answer_id")
-    private AnswerModel answer;
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<AnswerModel> answer = new ArrayList<>();
 }

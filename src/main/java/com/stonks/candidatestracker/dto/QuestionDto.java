@@ -16,13 +16,10 @@ public class QuestionDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private long id;
-    private String question;
-    private AnswerDto answer = new AnswerDto();
+    private Long markedAnswerId;
 
     public QuestionDto(QuestionModel question) {
         id = question.getId();
-        this.question = question.getQuestion();
-        answer = new AnswerDto(question.getAnswer());
     }
 
 }

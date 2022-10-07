@@ -21,10 +21,12 @@ public class TestModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
-    @OneToOne(mappedBy = "test")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "skill_id")
     private SkillModel skill = new SkillModel();
-    @OneToMany(mappedBy = "test")
+    @OneToMany(mappedBy = "test", fetch = FetchType.LAZY)
     private List<QuestionModel> questions = new ArrayList<>();
+    private int numberOfQuestionsToBeApproved;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserModel user;
