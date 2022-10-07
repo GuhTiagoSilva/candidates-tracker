@@ -1,6 +1,5 @@
 package com.stonks.candidatestracker.services;
 
-import com.stonks.candidatestracker.dto.UserDto;
 import com.stonks.candidatestracker.dto.responses.UserWorkerGetResponseDto;
 import com.stonks.candidatestracker.models.UserModel;
 import com.stonks.candidatestracker.repositories.UserRepository;

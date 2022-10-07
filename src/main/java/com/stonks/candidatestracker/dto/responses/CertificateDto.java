@@ -7,19 +7,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TestRevisionDto implements Serializable {
+public class CertificateDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private UserDto user;
-    private Integer points;
-    private boolean approved;
-    private SkillGetResponseDto skill;
-
-
-
+    private long id;
+    private String skillName;
+    private String userName;
+    private LocalDate approvedDate;
 }

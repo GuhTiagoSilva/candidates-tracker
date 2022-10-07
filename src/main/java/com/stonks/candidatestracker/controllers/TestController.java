@@ -1,8 +1,8 @@
 package com.stonks.candidatestracker.controllers;
 
 import com.stonks.candidatestracker.dto.TestInsertDto;
+import com.stonks.candidatestracker.dto.responses.CertificateDto;
 import com.stonks.candidatestracker.dto.responses.TestGetResponseDto;
-import com.stonks.candidatestracker.dto.responses.TestRevisionDto;
 import com.stonks.candidatestracker.services.TestService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -39,9 +39,9 @@ public class TestController {
 
     @ApiOperation("Resultado do teste")
     @GetMapping("/{testId}/revision")
-    @PreAuthorize("hasAnyRole('WORKER', 'RECRUITER')")
+    @PreAuthorize("hasAnyRole('WORKER')")
     @ResponseStatus(HttpStatus.OK)
-    public TestRevisionDto correctTest(@PathVariable Long testId, @RequestBody TestInsertDto testInsertDto) {
+    public CertificateDto correctTest(@PathVariable Long testId, @RequestBody TestInsertDto testInsertDto) {
         return testService.correctTest(testId, testInsertDto);
     }
 

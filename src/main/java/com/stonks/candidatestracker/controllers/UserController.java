@@ -4,14 +4,12 @@ import com.stonks.candidatestracker.dto.UserDto;
 import com.stonks.candidatestracker.dto.UserInsertDto;
 import com.stonks.candidatestracker.dto.UserUpdateDto;
 import com.stonks.candidatestracker.dto.responses.UserWorkerGetResponseDto;
-import com.stonks.candidatestracker.dto.responses.VacancyGetResponseDto;
 import com.stonks.candidatestracker.services.UserService;
 import com.stonks.candidatestracker.services.UserWorkerService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
