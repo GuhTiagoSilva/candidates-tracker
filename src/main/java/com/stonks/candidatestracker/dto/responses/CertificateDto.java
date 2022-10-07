@@ -1,6 +1,5 @@
 package com.stonks.candidatestracker.dto.responses;
 
-import com.stonks.candidatestracker.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

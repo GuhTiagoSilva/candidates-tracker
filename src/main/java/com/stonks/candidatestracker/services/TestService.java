@@ -1,7 +1,6 @@
 package com.stonks.candidatestracker.services;
 
 import com.stonks.candidatestracker.dto.TestInsertDto;
-import com.stonks.candidatestracker.dto.UserDto;
 import com.stonks.candidatestracker.dto.responses.CertificateDto;
 import com.stonks.candidatestracker.dto.responses.TestGetResponseDto;
 import com.stonks.candidatestracker.models.*;
