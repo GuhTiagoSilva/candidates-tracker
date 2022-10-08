@@ -53,10 +53,10 @@ public class VacancyController {
         return vacancyService.findAllByCreator();
     }
 
-    @GetMapping("/update")
+    @PutMapping("/{vacancyId}/update")
     @ApiOperation(value = "Atualizar vaga")
     @PreAuthorize(value = "hasAnyRole('RECRUITER')")
-    public void updateVacancy(Long vacancyId, VacancyUpdateDto vacancyUpdateDto) {
+    public void updateVacancy(@PathVariable Long vacancyId, @RequestBody VacancyUpdateDto vacancyUpdateDto) {
         vacancyService.updateVacancy(vacancyId, vacancyUpdateDto);
     }
 
