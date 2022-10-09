@@ -1,6 +1,5 @@
 package com.stonks.candidatestracker.controllers;
 
-import com.stonks.candidatestracker.dto.UserDto;
 import com.stonks.candidatestracker.dto.UserInsertDto;
 import com.stonks.candidatestracker.dto.UserUpdateDto;
 import com.stonks.candidatestracker.dto.responses.UserWorkerGetResponseDto;
