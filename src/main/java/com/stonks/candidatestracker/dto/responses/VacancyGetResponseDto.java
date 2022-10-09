@@ -23,6 +23,8 @@ public class VacancyGetResponseDto implements Serializable {
     private String contractType;
     private UserDto creator;
 
+    private boolean concluded;
+
     public VacancyGetResponseDto(VacancyModel vacancyModel) {
         id = vacancyModel.getId();
         name = vacancyModel.getName();
@@ -30,6 +32,7 @@ public class VacancyGetResponseDto implements Serializable {
         country = vacancyModel.getCountry().getCountry();
         contractType = vacancyModel.getContractType().getValue();
         creator = new UserDto(vacancyModel.getCreator());
+        concluded = vacancyModel.isConcluded();
     }
 
 }
