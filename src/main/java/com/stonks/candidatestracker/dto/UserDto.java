@@ -24,7 +24,6 @@ public class UserDto implements Serializable {
 
     private boolean isOpenToWork;
     private RoleDto role;
-
     private String photo;
 
     public UserDto(UserModel user) {

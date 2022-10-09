@@ -47,7 +47,7 @@ public class UserController {
     @ApiOperation(value = "Achar informações do usuário autenticado")
     @PreAuthorize("hasAnyRole('WORKER', 'RECRUITER')")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto findAuthUserInformation() {
+    public UserWorkerGetResponseDto findAuthUserInformation() {
         return userService.findAuthUserInformation();
     }
 

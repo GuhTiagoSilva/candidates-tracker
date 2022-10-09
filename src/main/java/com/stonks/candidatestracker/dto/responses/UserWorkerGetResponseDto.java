@@ -22,6 +22,8 @@ public class UserWorkerGetResponseDto extends UserDto {
     private List<AcademicFormationGetResponseDto> academicFormation = new ArrayList<>();
     private List<TestDto> tests = new ArrayList<>();
 
+    private List<VacancyGetResponseDto> vacanciesCreated = new ArrayList<>();
+
     private HashSet<CertificateDto> certificates = new HashSet<>();
 
     public UserWorkerGetResponseDto(UserModel user) {
@@ -40,6 +42,9 @@ public class UserWorkerGetResponseDto extends UserDto {
         user.getSkills().forEach(skill -> this.skills.add(new SkillGetResponseDto(skill)));
         user.getFormations().forEach(formation -> this.academicFormation.add(new AcademicFormationGetResponseDto(formation)));
         user.getTests().forEach(test -> this.tests.add(new TestDto(test)));
+        user.getVacancies().forEach(vacancyModel -> {
+            this.vacanciesCreated.add(new VacancyGetResponseDto(vacancyModel));
+        });
     }
 
 }

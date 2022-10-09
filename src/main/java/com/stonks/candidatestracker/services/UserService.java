@@ -3,6 +3,7 @@ package com.stonks.candidatestracker.services;
 import com.stonks.candidatestracker.dto.UserDto;
 import com.stonks.candidatestracker.dto.UserInsertDto;
 import com.stonks.candidatestracker.dto.UserUpdateDto;
+import com.stonks.candidatestracker.dto.responses.UserWorkerGetResponseDto;
 import com.stonks.candidatestracker.models.*;
 import com.stonks.candidatestracker.repositories.*;
 import com.stonks.candidatestracker.services.exceptions.BusinessException;
@@ -65,9 +66,9 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public UserDto findAuthUserInformation() {
+    public UserWorkerGetResponseDto findAuthUserInformation() {
         UserModel userModel = authService.authenticated();
-        return new UserDto(userModel);
+        return new UserWorkerGetResponseDto(userModel);
     }
 
     @Transactional
