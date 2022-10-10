@@ -90,7 +90,7 @@ public class UserService implements UserDetailsService {
 
                 JobExperienceModel jobExperienceModel = new JobExperienceModel();
 
-                if (Objects.nonNull(jobExperience.getId()))
+                if (Objects.nonNull(jobExperience.getId()) && jobExperience.getId() != 0)
                     jobExperienceModel = jobExperienceRepository.getReferenceById(jobExperience.getId());
 
                 jobExperienceModel.setJobTitle(jobExperience.getJobTitle());
@@ -108,7 +108,7 @@ public class UserService implements UserDetailsService {
             for (SkillGetResponseDto skillModel : userDto.getSkills()) {
                 SkillModel skill = new SkillModel();
 
-                if (Objects.nonNull(skillModel.getId()))
+                if (Objects.nonNull(skillModel.getId()) && skillModel.getId() != 0)
                     skill = skillRepository.getReferenceById(skillModel.getId());
 
                 skill.setSkillName(skillModel.getSkillName());
@@ -121,7 +121,7 @@ public class UserService implements UserDetailsService {
             for (AcademicFormationGetResponseDto academicFormation : userDto.getAcademicFormation()) {
                 AcademicFormationModel academicFormationModel = new AcademicFormationModel();
 
-                if (Objects.nonNull(academicFormation.getId()))
+                if (Objects.nonNull(academicFormation.getId()) && academicFormation.getId() != 0)
                     academicFormationModel = academicFormationRepository.getReferenceById(academicFormation.getId());
 
                 academicFormationModel.setAcademicFormationType(academicFormation.getAcademicFormationType());
