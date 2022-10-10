@@ -3,6 +3,9 @@ package com.stonks.candidatestracker.services;
 import com.stonks.candidatestracker.dto.UserDto;
 import com.stonks.candidatestracker.dto.UserInsertDto;
 import com.stonks.candidatestracker.dto.UserUpdateDto;
+import com.stonks.candidatestracker.dto.responses.AcademicFormationGetResponseDto;
+import com.stonks.candidatestracker.dto.responses.JobExperienceGetResponseDto;
+import com.stonks.candidatestracker.dto.responses.SkillGetResponseDto;
 import com.stonks.candidatestracker.dto.responses.UserWorkerGetResponseDto;
 import com.stonks.candidatestracker.models.*;
 import com.stonks.candidatestracker.repositories.*;
@@ -83,44 +86,53 @@ public class UserService implements UserDetailsService {
         if (user.getRoleModel().getAuthority().equals("ROLE_WORKER")) {
             List<JobExperienceModel> jobExperiences = new ArrayList<>();
 
-            userDto.getJobExperiences().forEach(jobExperience -> {
-                final JobExperienceModel jobExperienceModel = new JobExperienceModel();
+            for (JobExperienceGetResponseDto jobExperience : userDto.getJobExperiences()) {
+
+                JobExperienceModel jobExperienceModel = new JobExperienceModel();
+
+                if (Objects.nonNull(jobExperience.getId()))
+                    jobExperienceModel = jobExperienceRepository.getReferenceById(jobExperience.getId());
+
                 jobExperienceModel.setJobTitle(jobExperience.getJobTitle());
                 jobExperienceModel.setDescription(jobExperience.getDescription());
                 jobExperienceModel.setCompanyName(jobExperience.getCompanyName());
                 jobExperienceModel.setEndDate(jobExperience.getEndDate());
                 jobExperienceModel.setStartDate(jobExperience.getStartDate());
                 jobExperienceModel.setWorker(user);
+                jobExperienceModel = jobExperienceRepository.save(jobExperienceModel);
                 jobExperiences.add(jobExperienceModel);
-            });
-
-            jobExperienceRepository.saveAll(jobExperiences);
+            }
 
             Set<SkillModel> skills = new HashSet<>();
 
-            userDto.getSkills().forEach(skillModel -> {
-                final SkillModel skill = new SkillModel();
-                skill.setSkillName(skillModel.getSkillName());
-                skills.add(skill);
-            });
+            for (SkillGetResponseDto skillModel : userDto.getSkills()) {
+                SkillModel skill = new SkillModel();
 
-            skillRepository.saveAll(skills);
+                if (Objects.nonNull(skillModel.getId()))
+                    skill = skillRepository.getReferenceById(skillModel.getId());
+
+                skill.setSkillName(skillModel.getSkillName());
+                skill = skillRepository.save(skill);
+                skills.add(skill);
+            }
 
             List<AcademicFormationModel> academicFormations = new ArrayList<>();
 
-            userDto.getAcademicFormation().forEach(academicFormation -> {
-                final AcademicFormationModel academicFormationModel = new AcademicFormationModel();
+            for (AcademicFormationGetResponseDto academicFormation : userDto.getAcademicFormation()) {
+                AcademicFormationModel academicFormationModel = new AcademicFormationModel();
+
+                if (Objects.nonNull(academicFormation.getId()))
+                    academicFormationModel = academicFormationRepository.getReferenceById(academicFormation.getId());
+
                 academicFormationModel.setAcademicFormationType(academicFormation.getAcademicFormationType());
                 academicFormationModel.setEndDate(academicFormation.getEndDate());
                 academicFormationModel.setStartDate(academicFormation.getStartDate());
                 academicFormationModel.setDescription(academicFormation.getDescription());
                 academicFormationModel.setInstitutionName(academicFormation.getInstitutionName());
                 academicFormationModel.setUser(user);
+                academicFormationModel = academicFormationRepository.save(academicFormationModel);
                 academicFormations.add(academicFormationModel);
-            });
-
-            academicFormationRepository.saveAll(academicFormations);
-
+            }
             user.setExperiences(jobExperiences);
             user.setFormations(academicFormations);
             user.setSkills(skills);
