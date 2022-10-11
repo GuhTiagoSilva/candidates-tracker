@@ -42,7 +42,7 @@ public class VacancyController {
     @ApiOperation(value = "Aplicar para uma vaga")
     @PreAuthorize("hasAnyRole('WORKER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public void applyUserToVacancy(@PathVariable Long vacancyId, @RequestPart("resume")MultipartFile multipartFile) {
+    public void applyUserToVacancy(@PathVariable Long vacancyId, @RequestPart(value = "resume", required = false)MultipartFile multipartFile) {
         vacancyService.applyToVacancy(vacancyId, multipartFile);
     }
 
