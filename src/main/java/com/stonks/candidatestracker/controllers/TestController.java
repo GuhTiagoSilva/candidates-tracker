@@ -38,7 +38,7 @@ public class TestController {
     }
 
     @ApiOperation("Gera o certificado do teste")
-    @GetMapping("/{testId}/revision")
+    @PostMapping("/{testId}/revision")
     @PreAuthorize("hasAnyRole('WORKER')")
     @ResponseStatus(HttpStatus.OK)
     public CertificateDto generateCertificate(@PathVariable Long testId, @RequestBody TestInsertDto testInsertDto) {
